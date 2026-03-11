@@ -15,6 +15,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      packages: write
 
     steps:
       - name: Checkout
@@ -77,6 +78,23 @@ jobs:
           }
           Get-ChildItem artifacts -Filter *.snupkg | ForEach-Object {
             dotnet nuget push $_.FullName --api-key "${{ secrets.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+          }
+
+      - name: Configure GitHub Packages source
+        shell: pwsh
+        run: |
+          dotnet nuget remove source github | Out-Null 2>$null
+          dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
+            --name github `
+            --username "${{ github.actor }}" `
+            --password "${{ secrets.GITHUB_TOKEN }}" `
+            --store-password-in-clear-text
+
+      - name: Push package to GitHub Packages
+        shell: pwsh
+        run: |
+          Get-ChildItem artifacts -Filter *.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --source github --api-key "${{ secrets.GITHUB_TOKEN }}" --skip-duplicate
           }
 
       - name: Upload published artifacts
