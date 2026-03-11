@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -27,6 +27,10 @@
         --shadow: 0 30px 80px rgba(48, 31, 16, 0.18);
         --radius: 28px;
         --container: min(1180px, calc(100vw - 40px));
+        --scroll-offset: 136px;
+        --font-body: "IBM Plex Sans", sans-serif;
+        --font-heading: "Cormorant Garamond", serif;
+        --font-label: "IBM Plex Mono", monospace;
       }
 
       * {
@@ -35,13 +39,22 @@
 
       html {
         scroll-behavior: smooth;
+        scroll-padding-top: var(--scroll-offset);
+      }
+
+      html[lang="zh-CN"] {
+        --font-body: "Noto Sans SC", sans-serif;
+        --font-heading: "Noto Serif SC", serif;
+        --font-label: "Noto Sans SC", sans-serif;
       }
 
       body {
         margin: 0;
         color: var(--ink);
-        font-family: "IBM Plex Sans", sans-serif;
-        line-height: 1.6;
+        font-family: var(--font-body);
+        font-size: 17px;
+        line-height: 1.72;
+        text-rendering: optimizeLegibility;
         background:
           radial-gradient(circle at top left, rgba(177, 73, 47, 0.12), transparent 34%),
           radial-gradient(circle at top right, rgba(33, 102, 109, 0.12), transparent 28%),
@@ -117,12 +130,12 @@
       .section-title,
       .quote,
       .metric strong {
-        font-family: "Cormorant Garamond", serif;
+        font-family: var(--font-heading);
       }
 
       .brand-copy strong {
         display: block;
-        font-size: 1.1rem;
+        font-size: 1.22rem;
         letter-spacing: 0.02em;
       }
 
@@ -134,10 +147,10 @@
       .stage-label,
       .footer-note,
       .lang-switch button {
-        font-family: "IBM Plex Mono", monospace;
+        font-family: var(--font-label);
         text-transform: uppercase;
         letter-spacing: 0.12em;
-        font-size: 0.76rem;
+        font-size: 0.78rem;
       }
 
       .brand-copy span,
@@ -174,6 +187,7 @@
 
       nav a {
         color: var(--muted);
+        font-size: 0.92rem;
       }
 
       .lang-switch {
@@ -220,6 +234,9 @@
         border: 1px solid rgba(31, 35, 40, 0.16);
         color: var(--ink);
         background: var(--panel-strong);
+        font-family: var(--font-body);
+        font-size: 0.98rem;
+        font-weight: 500;
       }
 
       .button-primary {
@@ -238,7 +255,7 @@
       }
 
       main {
-        padding: 36px 0 72px;
+        padding: 44px 0 84px;
       }
 
       .hero {
@@ -259,7 +276,7 @@
       }
 
       .hero-copy {
-        padding: 34px;
+        padding: 40px;
       }
 
       .eyebrow {
@@ -267,6 +284,7 @@
         align-items: center;
         gap: 10px;
         color: var(--signal);
+        margin-bottom: 8px;
       }
 
       .eyebrow::before {
@@ -279,15 +297,18 @@
       h1 {
         margin: 18px 0 16px;
         font-size: clamp(3.4rem, 9vw, 6.9rem);
-        line-height: 0.9;
+        line-height: 0.96;
         font-weight: 600;
         letter-spacing: -0.04em;
+        max-width: 8ch;
       }
 
       .lead {
-        max-width: 58ch;
-        font-size: 1.06rem;
+        max-width: 43rem;
+        font-size: 1.13rem;
+        line-height: 1.9;
         color: #34383d;
+        text-wrap: pretty;
       }
 
       .hero-actions {
@@ -305,7 +326,7 @@
       }
 
       .metric {
-        padding: 16px;
+        padding: 18px 18px 16px;
         border-radius: 22px;
         background: rgba(255, 255, 255, 0.5);
         border: 1px solid rgba(31, 35, 40, 0.08);
@@ -313,7 +334,7 @@
 
       .metric strong {
         display: block;
-        font-size: 2rem;
+        font-size: 2.15rem;
         line-height: 1;
         margin-bottom: 6px;
       }
@@ -369,7 +390,8 @@
 
       .node span {
         color: var(--muted);
-        font-size: 0.92rem;
+        font-size: 0.96rem;
+        line-height: 1.6;
       }
 
       .node-primary {
@@ -441,20 +463,24 @@
 
       .section {
         margin-top: 28px;
-        padding: 28px;
+        padding: 34px;
       }
 
       .section-title {
-        margin: 0 0 10px;
+        margin: 0 0 14px;
         font-size: clamp(2rem, 5vw, 3.4rem);
-        line-height: 0.95;
+        line-height: 1.08;
         font-weight: 600;
         letter-spacing: -0.03em;
+        max-width: 13ch;
+        text-wrap: balance;
       }
 
       .section-copy {
-        max-width: 62ch;
+        max-width: 46rem;
         color: #394047;
+        line-height: 1.9;
+        text-wrap: pretty;
       }
 
       .feature-grid,
@@ -474,7 +500,7 @@
 
       .card {
         min-height: 100%;
-        padding: 22px;
+        padding: 26px 24px;
         border-radius: 24px;
         border: 1px solid rgba(31, 35, 40, 0.1);
         background: rgba(255, 255, 255, 0.5);
@@ -482,14 +508,16 @@
 
       .card h3,
       .table-card h3 {
-        margin: 0 0 10px;
-        font-size: 1.12rem;
+        margin: 0 0 12px;
+        font-size: 1.16rem;
+        line-height: 1.45;
       }
 
       .card p,
       .table-card p {
         margin: 0;
         color: var(--muted);
+        line-height: 1.82;
       }
 
       .chip-row {
@@ -511,7 +539,7 @@
       }
 
       .table-card {
-        padding: 24px;
+        padding: 30px;
       }
 
       .spec-table {
@@ -522,7 +550,7 @@
 
       .spec-table th,
       .spec-table td {
-        padding: 14px 0;
+        padding: 16px 0;
         text-align: left;
         vertical-align: top;
         border-bottom: 1px solid rgba(31, 35, 40, 0.12);
@@ -531,14 +559,16 @@
       .spec-table th {
         font-weight: 500;
         color: var(--muted);
-        width: 34%;
+        width: 28%;
       }
 
       .quote {
         margin: 0;
         font-size: clamp(2rem, 4.4vw, 3.15rem);
-        line-height: 1;
+        line-height: 1.18;
         letter-spacing: -0.03em;
+        max-width: 12ch;
+        text-wrap: balance;
       }
 
       .quote + p {
@@ -562,6 +592,53 @@
         justify-content: space-between;
         gap: 14px;
         padding: 0 4px;
+      }
+
+      #capabilities,
+      #details,
+      #open-source,
+      #top {
+        scroll-margin-top: var(--scroll-offset);
+      }
+
+      html[lang="zh-CN"] .brand-copy strong,
+      html[lang="zh-CN"] .hero-copy h1,
+      html[lang="zh-CN"] .section-title,
+      html[lang="zh-CN"] .quote,
+      html[lang="zh-CN"] .metric strong {
+        letter-spacing: -0.02em;
+      }
+
+      html[lang="zh-CN"] .brand-copy span,
+      html[lang="zh-CN"] .eyebrow,
+      html[lang="zh-CN"] .micro,
+      html[lang="zh-CN"] .metric span,
+      html[lang="zh-CN"] .chip,
+      html[lang="zh-CN"] .stage-label,
+      html[lang="zh-CN"] .footer-note,
+      html[lang="zh-CN"] .lang-switch button {
+        text-transform: none;
+        letter-spacing: 0.04em;
+        font-weight: 500;
+      }
+
+      html[lang="zh-CN"] nav a {
+        letter-spacing: 0.02em;
+      }
+
+      html[lang="zh-CN"] h1 {
+        line-height: 1.08;
+        max-width: 10ch;
+      }
+
+      html[lang="zh-CN"] .section-title {
+        line-height: 1.26;
+        max-width: 18ch;
+      }
+
+      html[lang="zh-CN"] .quote {
+        line-height: 1.34;
+        max-width: 16ch;
       }
 
       @media (prefers-reduced-motion: no-preference) {
@@ -673,6 +750,10 @@
           gap: 14px;
         }
 
+        html {
+          --scroll-offset: 118px;
+        }
+
         nav a {
           padding-left: 0;
           padding-right: 0;
@@ -688,6 +769,7 @@
 
         h1 {
           font-size: clamp(3rem, 18vw, 4.8rem);
+          max-width: none;
         }
 
         .diagram {
