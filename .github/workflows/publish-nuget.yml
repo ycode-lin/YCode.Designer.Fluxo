@@ -59,15 +59,25 @@ jobs:
 
       - name: Push package with Trusted Publishing
         if: ${{ steps.publish-mode.outputs.mode == 'trusted' }}
+        shell: pwsh
         run: |
-          dotnet nuget push "artifacts/*.nupkg" --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
-          dotnet nuget push "artifacts/*.snupkg" --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+          Get-ChildItem artifacts -Filter *.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+          }
+          Get-ChildItem artifacts -Filter *.snupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+          }
 
       - name: Push package with classic API key
         if: ${{ steps.publish-mode.outputs.mode == 'classic' }}
+        shell: pwsh
         run: |
-          dotnet nuget push "artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
-          dotnet nuget push "artifacts/*.snupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+          Get-ChildItem artifacts -Filter *.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --api-key "${{ secrets.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+          }
+          Get-ChildItem artifacts -Filter *.snupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --api-key "${{ secrets.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+          }
 
       - name: Upload published artifacts
         uses: actions/upload-artifact@v4
