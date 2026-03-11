@@ -34,29 +34,37 @@ jobs:
       - name: Pack
         run: dotnet pack YCode.Designer.Fluxo/YCode.Designer.Fluxo.csproj --configuration Release --no-build --output artifacts /p:ContinuousIntegrationBuild=true /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg
 
-      - name: Validate publishing configuration
+      - name: Determine publishing mode
+        id: publish-mode
         shell: bash
+        env:
+          NUGET_USER: ${{ vars.NUGET_USER }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
-          if [[ -z "${{ vars.NUGET_USER }}" && -z "${{ secrets.NUGET_API_KEY }}" ]]; then
+          if [[ -n "$NUGET_API_KEY" ]]; then
+            echo "mode=classic" >> "$GITHUB_OUTPUT"
+          elif [[ -n "$NUGET_USER" ]]; then
+            echo "mode=trusted" >> "$GITHUB_OUTPUT"
+          else
             echo "Configure either repo variable NUGET_USER for Trusted Publishing or secret NUGET_API_KEY for classic publishing."
             exit 1
           fi
 
       - name: NuGet login with Trusted Publishing
-        if: ${{ vars.NUGET_USER != '' && secrets.NUGET_API_KEY == '' }}
+        if: ${{ steps.publish-mode.outputs.mode == 'trusted' }}
         id: nuget-login
         uses: NuGet/login@v1
         with:
           user: ${{ vars.NUGET_USER }}
 
       - name: Push package with Trusted Publishing
-        if: ${{ vars.NUGET_USER != '' && secrets.NUGET_API_KEY == '' }}
+        if: ${{ steps.publish-mode.outputs.mode == 'trusted' }}
         run: |
           dotnet nuget push "artifacts/*.nupkg" --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
           dotnet nuget push "artifacts/*.snupkg" --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
 
       - name: Push package with classic API key
-        if: ${{ secrets.NUGET_API_KEY != '' }}
+        if: ${{ steps.publish-mode.outputs.mode == 'classic' }}
         run: |
           dotnet nuget push "artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
           dotnet nuget push "artifacts/*.snupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
