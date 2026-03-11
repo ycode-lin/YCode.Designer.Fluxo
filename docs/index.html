@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="YCode.Designer.Fluxo is a WPF node and flow designer focused on drag interactions, viewport control, and MVVM-friendly visual tooling."
+    />
+    <title>YCode.Designer.Fluxo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #ede6dc;
+        --bg-deep: #d8ccbb;
+        --panel: rgba(252, 248, 241, 0.86);
+        --panel-strong: rgba(255, 252, 246, 0.96);
+        --ink: #1f2328;
+        --muted: #5e625d;
+        --line: rgba(31, 35, 40, 0.18);
+        --accent: #b1492f;
+        --accent-soft: #d59b73;
+        --signal: #21666d;
+        --shadow: 0 30px 80px rgba(48, 31, 16, 0.18);
+        --radius: 28px;
+        --container: min(1180px, calc(100vw - 40px));
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font-family: "IBM Plex Sans", sans-serif;
+        line-height: 1.6;
+        background:
+          radial-gradient(circle at top left, rgba(177, 73, 47, 0.12), transparent 34%),
+          radial-gradient(circle at top right, rgba(33, 102, 109, 0.12), transparent 28%),
+          linear-gradient(180deg, #f6efe4 0%, var(--bg) 38%, var(--bg-deep) 100%);
+        min-width: 320px;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.32;
+        background-image:
+          linear-gradient(rgba(31, 35, 40, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(31, 35, 40, 0.035) 1px, transparent 1px);
+        background-size: 32px 32px;
+        mask-image: radial-gradient(circle at center, black 48%, transparent 88%);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .shell {
+        width: var(--container);
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 16px;
+        z-index: 20;
+        padding-top: 16px;
+      }
+
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 18px;
+        border: 1px solid rgba(31, 35, 40, 0.12);
+        border-radius: 999px;
+        backdrop-filter: blur(18px);
+        background: rgba(252, 248, 241, 0.72);
+        box-shadow: 0 10px 30px rgba(48, 31, 16, 0.08);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        border: 1px solid rgba(31, 35, 40, 0.12);
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(216, 204, 187, 0.75));
+        padding: 7px;
+      }
+
+      .brand-copy strong,
+      .hero-copy h1,
+      .section-title,
+      .quote,
+      .metric strong {
+        font-family: "Cormorant Garamond", serif;
+      }
+
+      .brand-copy strong {
+        display: block;
+        font-size: 1.1rem;
+        letter-spacing: 0.02em;
+      }
+
+      .brand-copy span,
+      .eyebrow,
+      .micro,
+      .metric span,
+      .chip,
+      .stage-label,
+      .footer-note {
+        font-family: "IBM Plex Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.76rem;
+      }
+
+      .brand-copy span,
+      .micro,
+      .metric span,
+      .footer-note {
+        color: var(--muted);
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      nav a,
+      .button {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: 0 18px;
+        transition: transform 180ms ease, background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+      }
+
+      nav a {
+        color: var(--muted);
+      }
+
+      nav a:focus-visible,
+      .button:focus-visible {
+        outline: 3px solid rgba(33, 102, 109, 0.3);
+        outline-offset: 3px;
+      }
+
+      nav a:hover,
+      .button:hover {
+        transform: translateY(-1px);
+      }
+
+      .button {
+        border: 1px solid rgba(31, 35, 40, 0.16);
+        color: var(--ink);
+        background: var(--panel-strong);
+      }
+
+      .button-primary {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: #f6efe4;
+      }
+
+      .button-primary:hover {
+        background: #2d3137;
+      }
+
+      .button-secondary:hover,
+      nav a:hover {
+        background: rgba(255, 255, 255, 0.42);
+      }
+
+      main {
+        padding: 36px 0 72px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 28px;
+        align-items: stretch;
+        padding-top: 28px;
+      }
+
+      .panel {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(31, 35, 40, 0.12);
+        border-radius: var(--radius);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-copy {
+        padding: 34px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--signal);
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 40px;
+        height: 1px;
+        background: currentColor;
+      }
+
+      h1 {
+        margin: 18px 0 16px;
+        font-size: clamp(3.4rem, 9vw, 6.9rem);
+        line-height: 0.9;
+        font-weight: 600;
+        letter-spacing: -0.04em;
+      }
+
+      .lead {
+        max-width: 58ch;
+        font-size: 1.06rem;
+        color: #34383d;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .hero-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .metric {
+        padding: 16px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(31, 35, 40, 0.08);
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 2rem;
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+
+      .hero-stage {
+        padding: 24px;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.28)),
+          linear-gradient(180deg, rgba(33, 102, 109, 0.12), rgba(177, 73, 47, 0.1));
+      }
+
+      .stage-frame {
+        position: relative;
+        min-height: 100%;
+        padding: 18px;
+        border-radius: 24px;
+        border: 1px solid rgba(31, 35, 40, 0.1);
+        background:
+          linear-gradient(rgba(31, 35, 40, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(31, 35, 40, 0.06) 1px, transparent 1px),
+          rgba(250, 245, 237, 0.84);
+        background-size: 28px 28px;
+      }
+
+      .stage-label {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--muted);
+        margin-bottom: 22px;
+      }
+
+      .diagram {
+        position: relative;
+        min-height: 430px;
+      }
+
+      .node {
+        position: absolute;
+        min-width: 150px;
+        padding: 14px 16px;
+        border-radius: 22px;
+        border: 1px solid rgba(31, 35, 40, 0.12);
+        background: rgba(255, 252, 246, 0.95);
+        box-shadow: 0 14px 28px rgba(48, 31, 16, 0.08);
+      }
+
+      .node strong {
+        display: block;
+        font-size: 1rem;
+        margin-bottom: 4px;
+      }
+
+      .node span {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .node-primary {
+        top: 28px;
+        left: 20px;
+      }
+
+      .node-mid {
+        top: 176px;
+        left: 176px;
+      }
+
+      .node-right {
+        top: 70px;
+        right: 8px;
+      }
+
+      .node-bottom {
+        bottom: 30px;
+        right: 60px;
+      }
+
+      .diagram-line {
+        position: absolute;
+        height: 2px;
+        transform-origin: left center;
+        background: linear-gradient(90deg, var(--signal), rgba(33, 102, 109, 0.2));
+      }
+
+      .line-a {
+        top: 106px;
+        left: 148px;
+        width: 182px;
+        transform: rotate(13deg);
+      }
+
+      .line-b {
+        top: 213px;
+        left: 286px;
+        width: 190px;
+        transform: rotate(-24deg);
+      }
+
+      .line-c {
+        top: 238px;
+        left: 136px;
+        width: 116px;
+        transform: rotate(18deg);
+        background: linear-gradient(90deg, var(--accent), rgba(177, 73, 47, 0.16));
+      }
+
+      .diagram-image {
+        position: absolute;
+        left: 10px;
+        bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(31, 35, 40, 0.12);
+        background: rgba(255, 252, 246, 0.94);
+      }
+
+      .diagram-image img {
+        width: 36px;
+        height: 36px;
+      }
+
+      .section {
+        margin-top: 28px;
+        padding: 28px;
+      }
+
+      .section-title {
+        margin: 0 0 10px;
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        line-height: 0.95;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+      }
+
+      .section-copy {
+        max-width: 62ch;
+        color: #394047;
+      }
+
+      .feature-grid,
+      .detail-grid {
+        display: grid;
+        gap: 16px;
+        margin-top: 22px;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .detail-grid {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+
+      .card {
+        min-height: 100%;
+        padding: 22px;
+        border-radius: 24px;
+        border: 1px solid rgba(31, 35, 40, 0.1);
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      .card h3,
+      .table-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.12rem;
+      }
+
+      .card p,
+      .table-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .chip {
+        min-height: 38px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 14px;
+        border-radius: 999px;
+        color: var(--signal);
+        border: 1px solid rgba(33, 102, 109, 0.2);
+        background: rgba(33, 102, 109, 0.07);
+      }
+
+      .table-card {
+        padding: 24px;
+      }
+
+      .spec-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+      }
+
+      .spec-table th,
+      .spec-table td {
+        padding: 14px 0;
+        text-align: left;
+        vertical-align: top;
+        border-bottom: 1px solid rgba(31, 35, 40, 0.12);
+      }
+
+      .spec-table th {
+        font-weight: 500;
+        color: var(--muted);
+        width: 34%;
+      }
+
+      .quote {
+        margin: 0;
+        font-size: clamp(2rem, 4.4vw, 3.15rem);
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+
+      .quote + p {
+        margin-top: 16px;
+      }
+
+      .cta {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 22px;
+        flex-wrap: wrap;
+      }
+
+      footer {
+        padding: 20px 0 8px;
+      }
+
+      .footer-note {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 0 4px;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        .hero-copy,
+        .hero-stage,
+        .section,
+        .metric,
+        .node {
+          opacity: 0;
+          transform: translateY(18px);
+          animation: rise 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .hero-stage {
+          animation-delay: 120ms;
+        }
+
+        .metric:nth-child(1),
+        .section:nth-of-type(1) {
+          animation-delay: 180ms;
+        }
+
+        .metric:nth-child(2),
+        .section:nth-of-type(2) {
+          animation-delay: 260ms;
+        }
+
+        .metric:nth-child(3),
+        .section:nth-of-type(3) {
+          animation-delay: 340ms;
+        }
+
+        .node-primary {
+          animation-delay: 440ms;
+        }
+
+        .node-mid {
+          animation-delay: 540ms;
+        }
+
+        .node-right {
+          animation-delay: 620ms;
+        }
+
+        .node-bottom {
+          animation-delay: 700ms;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+
+      @keyframes rise {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 980px) {
+        .hero,
+        .detail-grid,
+        .feature-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-copy,
+        .hero-stage,
+        .section {
+          padding: 24px;
+        }
+
+        .hero-metrics {
+          grid-template-columns: 1fr;
+        }
+
+        .diagram {
+          min-height: 500px;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .topbar {
+          top: 10px;
+        }
+
+        .topbar-inner {
+          border-radius: 28px;
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        nav {
+          width: 100%;
+        }
+
+        nav a {
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        .hero {
+          padding-top: 16px;
+        }
+
+        h1 {
+          font-size: clamp(3rem, 18vw, 4.8rem);
+        }
+
+        .diagram {
+          min-height: 560px;
+        }
+
+        .node-primary {
+          top: 18px;
+          left: 0;
+        }
+
+        .node-right {
+          top: 146px;
+          right: auto;
+          left: 54px;
+        }
+
+        .node-mid {
+          top: 302px;
+          left: 22px;
+        }
+
+        .node-bottom {
+          right: 12px;
+          bottom: 78px;
+        }
+
+        .line-a {
+          top: 96px;
+          left: 110px;
+          width: 118px;
+          transform: rotate(34deg);
+        }
+
+        .line-b {
+          top: 258px;
+          left: 118px;
+          width: 128px;
+          transform: rotate(60deg);
+        }
+
+        .line-c {
+          top: 360px;
+          left: 108px;
+          width: 146px;
+          transform: rotate(-18deg);
+        }
+
+        .cta,
+        .footer-note {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar shell">
+      <div class="topbar-inner">
+        <a class="brand" href="#top" aria-label="Go to top">
+          <img class="brand-mark" src="./assets/fluxo-mark.png" alt="YCode Designer Fluxo mark" />
+          <span class="brand-copy">
+            <strong>YCode.Designer.Fluxo</strong>
+            <span>WPF node + flow designer</span>
+          </span>
+        </a>
+        <nav aria-label="Primary">
+          <a href="#capabilities">Capabilities</a>
+          <a href="#details">Technical Notes</a>
+          <a href="#open-source">Open Source</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="shell" id="top">
+      <section class="hero">
+        <article class="panel hero-copy">
+          <div class="eyebrow">Visual tooling for WPF systems</div>
+          <h1>Design flow, not friction.</h1>
+          <p class="lead">
+            YCode.Designer.Fluxo is an exploratory WPF control library for node dragging, viewport
+            orchestration, line rendering, and MVVM-oriented flow editing. It is built as a practical
+            study in graphical software composition rather than a marketing shell.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo">Open Repository</a>
+            <a class="button button-secondary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo/blob/master/README.md">Read README</a>
+          </div>
+          <div class="hero-metrics" aria-label="Project highlights">
+            <div class="metric">
+              <strong>net8.0</strong>
+              <span>Windows + WPF target</span>
+            </div>
+            <div class="metric">
+              <strong>MVVM</strong>
+              <span>Refactor direction</span>
+            </div>
+            <div class="metric">
+              <strong>MIT</strong>
+              <span>Open-source license</span>
+            </div>
+          </div>
+        </article>
+
+        <aside class="panel hero-stage" aria-label="Diagram preview">
+          <div class="stage-frame">
+            <div class="stage-label">
+              <span>viewport / lines / selection</span>
+              <span>editor study</span>
+            </div>
+            <div class="diagram">
+              <div class="diagram-line line-a" aria-hidden="true"></div>
+              <div class="diagram-line line-b" aria-hidden="true"></div>
+              <div class="diagram-line line-c" aria-hidden="true"></div>
+
+              <article class="node node-primary">
+                <strong>FluxoDesigner</strong>
+                <span>Zoom, pan, drag events</span>
+              </article>
+              <article class="node node-right">
+                <strong>ItemsHost</strong>
+                <span>Layout surface + extent</span>
+              </article>
+              <article class="node node-mid">
+                <strong>Adapters</strong>
+                <span>Bridge visuals to data</span>
+              </article>
+              <article class="node node-bottom">
+                <strong>Lines</strong>
+                <span>Bezier or step variants</span>
+              </article>
+
+              <div class="diagram-image">
+                <img src="./assets/fluxo-mark.png" alt="Fluxo icon" />
+                <span class="micro">Packaged repository icon</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="panel section" id="capabilities">
+        <div class="micro">Capabilities</div>
+        <h2 class="section-title">A WPF canvas study shifting toward a control-first model.</h2>
+        <p class="section-copy">
+          The current branch focuses on moving away from an ad-hoc canvas approach and toward a cleaner
+          control architecture. The result is a repository that is useful both as code and as reference
+          material for developers building their own visual editors.
+        </p>
+        <div class="feature-grid">
+          <article class="card">
+            <h3>Viewport control</h3>
+            <p>
+              Built-in transforms manage zoom and pan while the control tracks extent and viewport
+              location as first-class state.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Interactive nodes</h3>
+            <p>
+              Drag events and selection infrastructure make the designer surface behave like an editor,
+              not just a passive visual.
+            </p>
+          </article>
+          <article class="card">
+            <h3>Line strategy</h3>
+            <p>
+              Multiple line types allow the project to explore different connection semantics for flow,
+              graph, and node editor scenarios.
+            </p>
+          </article>
+        </div>
+        <div class="chip-row" aria-label="Tags">
+          <span class="chip">Node Editor</span>
+          <span class="chip">Flow Editing</span>
+          <span class="chip">WPF Controls</span>
+          <span class="chip">MVVM Refactor</span>
+        </div>
+      </section>
+
+      <section class="detail-grid" id="details">
+        <article class="panel section table-card">
+          <div class="micro">Technical Notes</div>
+          <h2 class="section-title">The repository is small, but the interaction surface is not.</h2>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <th scope="row">Primary control</th>
+                <td><code>FluxoDesigner</code> coordinates viewport state, item hosting, drag events, and tool placement.</td>
+              </tr>
+              <tr>
+                <th scope="row">Layout engine</th>
+                <td><code>FluxoPanel</code> arranges items and computes extent bounds from rendered children.</td>
+              </tr>
+              <tr>
+                <th scope="row">Extension helpers</th>
+                <td>Utility methods cover hit testing, safe mouse capture, collection helpers, and visual-tree traversal.</td>
+              </tr>
+              <tr>
+                <th scope="row">Target framework</th>
+                <td><code>net8.0-windows</code> with WPF enabled.</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="panel section" id="open-source">
+          <div class="micro">Open Source</div>
+          <p class="quote">Built to understand how visual editing tools should feel, not just how they should compile.</p>
+          <p class="section-copy">
+            The README documents the ongoing refactor and points to the earlier canvas-driven approach on
+            the <code>CanvasDesigner</code> branch. This Pages site exists for fast browsing and a cleaner
+            first impression when sharing the repository.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo/tree/master/YCode.Designer.Fluxo">Browse Source</a>
+            <a class="button button-secondary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo/tree/CanvasDesigner">CanvasDesigner Branch</a>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel section">
+        <div class="cta">
+          <div>
+            <div class="micro">GitHub Pages</div>
+            <h2 class="section-title">Open the live project page directly from the repository.</h2>
+            <p class="section-copy">
+              Once GitHub Pages is enabled for <code>master /docs</code>, the site is available at the
+              project page URL and can be linked from the README for quick preview.
+            </p>
+          </div>
+          <a class="button button-primary" href="https://ycode-lin.github.io/YCode.Designer.Fluxo/">Open Pages</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell">
+      <div class="footer-note">
+        <span>YCode.Designer.Fluxo</span>
+        <span>WPF • MVVM • Visual editor research</span>
+      </div>
+    </footer>
+  </body>
+</html>
