@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="YCode.Designer.Fluxo is a WPF node and flow designer focused on drag interactions, viewport control, and MVVM-friendly visual tooling."
+      content="YCode.Designer.Fluxo 是一个面向 WPF 的节点与流程设计器，聚焦拖拽交互、视口控制与 MVVM 友好的可视化工具能力。"
     />
     <title>YCode.Designer.Fluxo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,9 +22,7 @@
         --panel-strong: rgba(255, 252, 246, 0.96);
         --ink: #1f2328;
         --muted: #5e625d;
-        --line: rgba(31, 35, 40, 0.18);
         --accent: #b1492f;
-        --accent-soft: #d59b73;
         --signal: #21666d;
         --shadow: 0 30px 80px rgba(48, 31, 16, 0.18);
         --radius: 28px;
@@ -134,7 +132,8 @@
       .metric span,
       .chip,
       .stage-label,
-      .footer-note {
+      .footer-note,
+      .lang-switch button {
         font-family: "IBM Plex Mono", monospace;
         text-transform: uppercase;
         letter-spacing: 0.12em;
@@ -148,11 +147,17 @@
         color: var(--muted);
       }
 
-      nav {
+      nav,
+      .nav-group {
         display: flex;
         align-items: center;
         gap: 10px;
         flex-wrap: wrap;
+      }
+
+      nav {
+        justify-content: space-between;
+        flex: 1;
       }
 
       nav a,
@@ -171,15 +176,44 @@
         color: var(--muted);
       }
 
-      nav a:focus-visible,
-      .button:focus-visible {
-        outline: 3px solid rgba(33, 102, 109, 0.3);
-        outline-offset: 3px;
+      .lang-switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px;
+        border-radius: 999px;
+        border: 1px solid rgba(31, 35, 40, 0.12);
+        background: rgba(255, 255, 255, 0.38);
       }
 
+      .lang-switch button {
+        min-width: 52px;
+        min-height: 36px;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+      }
+
+      .lang-switch button:hover,
       nav a:hover,
       .button:hover {
         transform: translateY(-1px);
+      }
+
+      .lang-switch button[aria-pressed="true"] {
+        background: var(--ink);
+        color: #f6efe4;
+      }
+
+      nav a:focus-visible,
+      .button:focus-visible,
+      .lang-switch button:focus-visible {
+        outline: 3px solid rgba(33, 102, 109, 0.3);
+        outline-offset: 3px;
       }
 
       .button {
@@ -630,13 +664,22 @@
           flex-direction: column;
         }
 
-        nav {
+        nav,
+        .nav-group {
           width: 100%;
+        }
+
+        nav {
+          gap: 14px;
         }
 
         nav a {
           padding-left: 0;
           padding-right: 0;
+        }
+
+        .lang-switch {
+          align-self: flex-start;
         }
 
         .hero {
@@ -708,13 +751,19 @@
           <img class="brand-mark" src="./assets/fluxo-mark.png" alt="YCode Designer Fluxo mark" />
           <span class="brand-copy">
             <strong>YCode.Designer.Fluxo</strong>
-            <span>WPF node + flow designer</span>
+            <span data-i18n="brandTagline">WPF 节点与流程设计器</span>
           </span>
         </a>
-        <nav aria-label="Primary">
-          <a href="#capabilities">Capabilities</a>
-          <a href="#details">Technical Notes</a>
-          <a href="#open-source">Open Source</a>
+        <nav aria-label="Primary navigation">
+          <div class="nav-group">
+            <a href="#capabilities" data-i18n="navCapabilities">功能特性</a>
+            <a href="#details" data-i18n="navDetails">技术细节</a>
+            <a href="#open-source" data-i18n="navOpenSource">开源说明</a>
+          </div>
+          <div class="lang-switch" role="group" aria-label="Language switch">
+            <button type="button" data-lang="zh-CN" aria-pressed="true">中文</button>
+            <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          </div>
         </nav>
       </div>
     </header>
@@ -722,29 +771,28 @@
     <main class="shell" id="top">
       <section class="hero">
         <article class="panel hero-copy">
-          <div class="eyebrow">Visual tooling for WPF systems</div>
-          <h1>Design flow, not friction.</h1>
-          <p class="lead">
-            YCode.Designer.Fluxo is an exploratory WPF control library for node dragging, viewport
-            orchestration, line rendering, and MVVM-oriented flow editing. It is built as a practical
-            study in graphical software composition rather than a marketing shell.
+          <div class="eyebrow" data-i18n="heroEyebrow">为 WPF 系统打造的可视化工具</div>
+          <h1 data-i18n="heroTitle">设计流程，不制造阻力。</h1>
+          <p class="lead" data-i18n="heroLead">
+            YCode.Designer.Fluxo 是一个面向 WPF 的实验性控件库，聚焦节点拖拽、视口编排、连线绘制与 MVVM
+            友好的流程编辑。它更像一次严肃的图形化软件构成研究，而不是一个空洞的展示页。
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo">Open Repository</a>
-            <a class="button button-secondary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo/blob/master/README.md">Read README</a>
+            <a class="button button-primary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo" data-i18n="heroPrimaryCta">打开仓库</a>
+            <a class="button button-secondary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo/blob/master/README.md" data-i18n="heroSecondaryCta">阅读 README</a>
           </div>
           <div class="hero-metrics" aria-label="Project highlights">
             <div class="metric">
               <strong>net8.0</strong>
-              <span>Windows + WPF target</span>
+              <span data-i18n="metricOne">Windows + WPF 目标框架</span>
             </div>
             <div class="metric">
               <strong>MVVM</strong>
-              <span>Refactor direction</span>
+              <span data-i18n="metricTwo">当前重构方向</span>
             </div>
             <div class="metric">
               <strong>MIT</strong>
-              <span>Open-source license</span>
+              <span data-i18n="metricThree">开源许可证</span>
             </div>
           </div>
         </article>
@@ -752,8 +800,8 @@
         <aside class="panel hero-stage" aria-label="Diagram preview">
           <div class="stage-frame">
             <div class="stage-label">
-              <span>viewport / lines / selection</span>
-              <span>editor study</span>
+              <span data-i18n="stageLabelLeft">视口 / 连线 / 选择</span>
+              <span data-i18n="stageLabelRight">编辑器研究</span>
             </div>
             <div class="diagram">
               <div class="diagram-line line-a" aria-hidden="true"></div>
@@ -762,24 +810,24 @@
 
               <article class="node node-primary">
                 <strong>FluxoDesigner</strong>
-                <span>Zoom, pan, drag events</span>
+                <span data-i18n="nodeOne">缩放、平移、拖拽事件</span>
               </article>
               <article class="node node-right">
                 <strong>ItemsHost</strong>
-                <span>Layout surface + extent</span>
+                <span data-i18n="nodeTwo">布局承载面与范围计算</span>
               </article>
               <article class="node node-mid">
                 <strong>Adapters</strong>
-                <span>Bridge visuals to data</span>
+                <span data-i18n="nodeThree">连接视觉层与数据层</span>
               </article>
               <article class="node node-bottom">
                 <strong>Lines</strong>
-                <span>Bezier or step variants</span>
+                <span data-i18n="nodeFour">Bezier 或 Step 线型</span>
               </article>
 
               <div class="diagram-image">
                 <img src="./assets/fluxo-mark.png" alt="Fluxo icon" />
-                <span class="micro">Packaged repository icon</span>
+                <span class="micro" data-i18n="diagramBadge">仓库打包图标</span>
               </div>
             </div>
           </div>
@@ -787,81 +835,68 @@
       </section>
 
       <section class="panel section" id="capabilities">
-        <div class="micro">Capabilities</div>
-        <h2 class="section-title">A WPF canvas study shifting toward a control-first model.</h2>
-        <p class="section-copy">
-          The current branch focuses on moving away from an ad-hoc canvas approach and toward a cleaner
-          control architecture. The result is a repository that is useful both as code and as reference
-          material for developers building their own visual editors.
+        <div class="micro" data-i18n="capabilitiesEyebrow">功能特性</div>
+        <h2 class="section-title" data-i18n="capabilitiesTitle">一个从 Canvas 试验逐步转向控件优先模型的 WPF 研究项目。</h2>
+        <p class="section-copy" data-i18n="capabilitiesLead">
+          当前分支正从临时性的 Canvas 方案迁移到更干净的控件架构。这样做的结果是，这个仓库不仅能作为代码使用，也能作为构建可视化编辑器时的参考样本。
         </p>
         <div class="feature-grid">
           <article class="card">
-            <h3>Viewport control</h3>
-            <p>
-              Built-in transforms manage zoom and pan while the control tracks extent and viewport
-              location as first-class state.
-            </p>
+            <h3 data-i18n="featureOneTitle">视口控制</h3>
+            <p data-i18n="featureOneBody">内置变换负责缩放和平移，控件自身则把范围与视口位置当作一等状态来维护。</p>
           </article>
           <article class="card">
-            <h3>Interactive nodes</h3>
-            <p>
-              Drag events and selection infrastructure make the designer surface behave like an editor,
-              not just a passive visual.
-            </p>
+            <h3 data-i18n="featureTwoTitle">交互式节点</h3>
+            <p data-i18n="featureTwoBody">拖拽事件和选择基础设施让设计面更像真正的编辑器，而不是被动展示的视觉层。</p>
           </article>
           <article class="card">
-            <h3>Line strategy</h3>
-            <p>
-              Multiple line types allow the project to explore different connection semantics for flow,
-              graph, and node editor scenarios.
-            </p>
+            <h3 data-i18n="featureThreeTitle">连线策略</h3>
+            <p data-i18n="featureThreeBody">多种线型让这个项目可以探索流程图、图结构与节点编辑场景下不同的连接语义。</p>
           </article>
         </div>
         <div class="chip-row" aria-label="Tags">
-          <span class="chip">Node Editor</span>
-          <span class="chip">Flow Editing</span>
-          <span class="chip">WPF Controls</span>
-          <span class="chip">MVVM Refactor</span>
+          <span class="chip" data-i18n="chipOne">节点编辑器</span>
+          <span class="chip" data-i18n="chipTwo">流程编辑</span>
+          <span class="chip" data-i18n="chipThree">WPF 控件</span>
+          <span class="chip" data-i18n="chipFour">MVVM 重构</span>
         </div>
       </section>
 
       <section class="detail-grid" id="details">
         <article class="panel section table-card">
-          <div class="micro">Technical Notes</div>
-          <h2 class="section-title">The repository is small, but the interaction surface is not.</h2>
+          <div class="micro" data-i18n="detailsEyebrow">技术细节</div>
+          <h2 class="section-title" data-i18n="detailsTitle">仓库体量不大，但交互面并不简单。</h2>
           <table class="spec-table">
             <tbody>
               <tr>
-                <th scope="row">Primary control</th>
-                <td><code>FluxoDesigner</code> coordinates viewport state, item hosting, drag events, and tool placement.</td>
+                <th scope="row" data-i18n="specOneHead">核心控件</th>
+                <td data-i18n-html="specOneBody"><code>FluxoDesigner</code> 负责协调视口状态、元素承载、拖拽事件与工具区布局。</td>
               </tr>
               <tr>
-                <th scope="row">Layout engine</th>
-                <td><code>FluxoPanel</code> arranges items and computes extent bounds from rendered children.</td>
+                <th scope="row" data-i18n="specTwoHead">布局引擎</th>
+                <td data-i18n-html="specTwoBody"><code>FluxoPanel</code> 对元素进行排布，并依据已渲染子元素计算整体范围。</td>
               </tr>
               <tr>
-                <th scope="row">Extension helpers</th>
-                <td>Utility methods cover hit testing, safe mouse capture, collection helpers, and visual-tree traversal.</td>
+                <th scope="row" data-i18n="specThreeHead">扩展辅助</th>
+                <td data-i18n="specThreeBody">辅助方法覆盖命中测试、安全鼠标捕获、集合处理以及视觉树遍历。</td>
               </tr>
               <tr>
-                <th scope="row">Target framework</th>
-                <td><code>net8.0-windows</code> with WPF enabled.</td>
+                <th scope="row" data-i18n="specFourHead">目标框架</th>
+                <td data-i18n-html="specFourBody"><code>net8.0-windows</code>，并启用 WPF。</td>
               </tr>
             </tbody>
           </table>
         </article>
 
         <article class="panel section" id="open-source">
-          <div class="micro">Open Source</div>
-          <p class="quote">Built to understand how visual editing tools should feel, not just how they should compile.</p>
-          <p class="section-copy">
-            The README documents the ongoing refactor and points to the earlier canvas-driven approach on
-            the <code>CanvasDesigner</code> branch. This Pages site exists for fast browsing and a cleaner
-            first impression when sharing the repository.
+          <div class="micro" data-i18n="openSourceEyebrow">开源说明</div>
+          <p class="quote" data-i18n="openSourceQuote">这个项目关心的是可视化编辑工具应该如何“手感正确”，而不仅仅是如何成功编译。</p>
+          <p class="section-copy" data-i18n-html="openSourceLead">
+            README 记录了正在进行中的重构，也指向了更早的 <code>CanvasDesigner</code> 分支实现。这个 Pages 站点的目标，是在分享仓库时提供更轻量也更清晰的第一印象。
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo/tree/master/YCode.Designer.Fluxo">Browse Source</a>
-            <a class="button button-secondary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo/tree/CanvasDesigner">CanvasDesigner Branch</a>
+            <a class="button button-primary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo/tree/master/YCode.Designer.Fluxo" data-i18n="openSourcePrimaryCta">浏览源码</a>
+            <a class="button button-secondary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo/tree/CanvasDesigner" data-i18n="openSourceSecondaryCta">CanvasDesigner 分支</a>
           </div>
         </article>
       </section>
@@ -869,14 +904,13 @@
       <section class="panel section">
         <div class="cta">
           <div>
-            <div class="micro">GitHub Pages</div>
-            <h2 class="section-title">Open the live project page directly from the repository.</h2>
-            <p class="section-copy">
-              Once GitHub Pages is enabled for <code>master /docs</code>, the site is available at the
-              project page URL and can be linked from the README for quick preview.
+            <div class="micro" data-i18n="pagesEyebrow">GitHub Pages</div>
+            <h2 class="section-title" data-i18n="pagesTitle">直接从仓库打开在线项目页。</h2>
+            <p class="section-copy" data-i18n-html="pagesLead">
+              启用 <code>master /docs</code> 后，站点就会在项目页地址可用，并且可以从 README 直接跳转访问。
             </p>
           </div>
-          <a class="button button-primary" href="https://ycode-lin.github.io/YCode.Designer.Fluxo/">Open Pages</a>
+          <a class="button button-primary" href="https://ycode-lin.github.io/YCode.Designer.Fluxo/" data-i18n="pagesCta">打开 Pages</a>
         </div>
       </section>
     </main>
@@ -884,8 +918,182 @@
     <footer class="shell">
       <div class="footer-note">
         <span>YCode.Designer.Fluxo</span>
-        <span>WPF • MVVM • Visual editor research</span>
+        <span data-i18n="footerNote">WPF • MVVM • 可视化编辑研究</span>
       </div>
     </footer>
+
+    <script>
+      const translations = {
+        "zh-CN": {
+          pageTitle: "YCode.Designer.Fluxo",
+          pageDescription:
+            "YCode.Designer.Fluxo 是一个面向 WPF 的节点与流程设计器，聚焦拖拽交互、视口控制与 MVVM 友好的可视化工具能力。",
+          navCapabilities: "功能特性",
+          navDetails: "技术细节",
+          navOpenSource: "开源说明",
+          brandTagline: "WPF 节点与流程设计器",
+          heroEyebrow: "为 WPF 系统打造的可视化工具",
+          heroTitle: "设计流程，不制造阻力。",
+          heroLead:
+            "YCode.Designer.Fluxo 是一个面向 WPF 的实验性控件库，聚焦节点拖拽、视口编排、连线绘制与 MVVM 友好的流程编辑。它更像一次严肃的图形化软件构成研究，而不是一个空洞的展示页。",
+          heroPrimaryCta: "打开仓库",
+          heroSecondaryCta: "阅读 README",
+          metricOne: "Windows + WPF 目标框架",
+          metricTwo: "当前重构方向",
+          metricThree: "开源许可证",
+          stageLabelLeft: "视口 / 连线 / 选择",
+          stageLabelRight: "编辑器研究",
+          nodeOne: "缩放、平移、拖拽事件",
+          nodeTwo: "布局承载面与范围计算",
+          nodeThree: "连接视觉层与数据层",
+          nodeFour: "Bezier 或 Step 线型",
+          diagramBadge: "仓库打包图标",
+          capabilitiesEyebrow: "功能特性",
+          capabilitiesTitle: "一个从 Canvas 试验逐步转向控件优先模型的 WPF 研究项目。",
+          capabilitiesLead:
+            "当前分支正从临时性的 Canvas 方案迁移到更干净的控件架构。这样做的结果是，这个仓库不仅能作为代码使用，也能作为构建可视化编辑器时的参考样本。",
+          featureOneTitle: "视口控制",
+          featureOneBody: "内置变换负责缩放和平移，控件自身则把范围与视口位置当作一等状态来维护。",
+          featureTwoTitle: "交互式节点",
+          featureTwoBody: "拖拽事件和选择基础设施让设计面更像真正的编辑器，而不是被动展示的视觉层。",
+          featureThreeTitle: "连线策略",
+          featureThreeBody: "多种线型让这个项目可以探索流程图、图结构与节点编辑场景下不同的连接语义。",
+          chipOne: "节点编辑器",
+          chipTwo: "流程编辑",
+          chipThree: "WPF 控件",
+          chipFour: "MVVM 重构",
+          detailsEyebrow: "技术细节",
+          detailsTitle: "仓库体量不大，但交互面并不简单。",
+          specOneHead: "核心控件",
+          specOneBody: "<code>FluxoDesigner</code> 负责协调视口状态、元素承载、拖拽事件与工具区布局。",
+          specTwoHead: "布局引擎",
+          specTwoBody: "<code>FluxoPanel</code> 对元素进行排布，并依据已渲染子元素计算整体范围。",
+          specThreeHead: "扩展辅助",
+          specThreeBody: "辅助方法覆盖命中测试、安全鼠标捕获、集合处理以及视觉树遍历。",
+          specFourHead: "目标框架",
+          specFourBody: "<code>net8.0-windows</code>，并启用 WPF。",
+          openSourceEyebrow: "开源说明",
+          openSourceQuote: "这个项目关心的是可视化编辑工具应该如何“手感正确”，而不仅仅是如何成功编译。",
+          openSourceLead:
+            "README 记录了正在进行中的重构，也指向了更早的 <code>CanvasDesigner</code> 分支实现。这个 Pages 站点的目标，是在分享仓库时提供更轻量也更清晰的第一印象。",
+          openSourcePrimaryCta: "浏览源码",
+          openSourceSecondaryCta: "CanvasDesigner 分支",
+          pagesEyebrow: "GitHub Pages",
+          pagesTitle: "直接从仓库打开在线项目页。",
+          pagesLead:
+            "启用 <code>master /docs</code> 后，站点就会在项目页地址可用，并且可以从 README 直接跳转访问。",
+          pagesCta: "打开 Pages",
+          footerNote: "WPF • MVVM • 可视化编辑研究"
+        },
+        en: {
+          pageTitle: "YCode.Designer.Fluxo",
+          pageDescription:
+            "YCode.Designer.Fluxo is a WPF node and flow designer focused on drag interactions, viewport control, and MVVM-friendly visual tooling.",
+          navCapabilities: "Capabilities",
+          navDetails: "Technical Notes",
+          navOpenSource: "Open Source",
+          brandTagline: "WPF node + flow designer",
+          heroEyebrow: "Visual tooling for WPF systems",
+          heroTitle: "Design flow, not friction.",
+          heroLead:
+            "YCode.Designer.Fluxo is an exploratory WPF control library for node dragging, viewport orchestration, line rendering, and MVVM-oriented flow editing. It is built as a practical study in graphical software composition rather than a marketing shell.",
+          heroPrimaryCta: "Open Repository",
+          heroSecondaryCta: "Read README",
+          metricOne: "Windows + WPF target",
+          metricTwo: "Refactor direction",
+          metricThree: "Open-source license",
+          stageLabelLeft: "viewport / lines / selection",
+          stageLabelRight: "editor study",
+          nodeOne: "Zoom, pan, drag events",
+          nodeTwo: "Layout surface + extent",
+          nodeThree: "Bridge visuals to data",
+          nodeFour: "Bezier or step variants",
+          diagramBadge: "Packaged repository icon",
+          capabilitiesEyebrow: "Capabilities",
+          capabilitiesTitle: "A WPF canvas study shifting toward a control-first model.",
+          capabilitiesLead:
+            "The current branch focuses on moving away from an ad-hoc canvas approach and toward a cleaner control architecture. The result is a repository that is useful both as code and as reference material for developers building their own visual editors.",
+          featureOneTitle: "Viewport control",
+          featureOneBody:
+            "Built-in transforms manage zoom and pan while the control tracks extent and viewport location as first-class state.",
+          featureTwoTitle: "Interactive nodes",
+          featureTwoBody:
+            "Drag events and selection infrastructure make the designer surface behave like an editor, not just a passive visual.",
+          featureThreeTitle: "Line strategy",
+          featureThreeBody:
+            "Multiple line types allow the project to explore different connection semantics for flow, graph, and node editor scenarios.",
+          chipOne: "Node Editor",
+          chipTwo: "Flow Editing",
+          chipThree: "WPF Controls",
+          chipFour: "MVVM Refactor",
+          detailsEyebrow: "Technical Notes",
+          detailsTitle: "The repository is small, but the interaction surface is not.",
+          specOneHead: "Primary control",
+          specOneBody:
+            "<code>FluxoDesigner</code> coordinates viewport state, item hosting, drag events, and tool placement.",
+          specTwoHead: "Layout engine",
+          specTwoBody:
+            "<code>FluxoPanel</code> arranges items and computes extent bounds from rendered children.",
+          specThreeHead: "Extension helpers",
+          specThreeBody:
+            "Utility methods cover hit testing, safe mouse capture, collection helpers, and visual-tree traversal.",
+          specFourHead: "Target framework",
+          specFourBody: "<code>net8.0-windows</code> with WPF enabled.",
+          openSourceEyebrow: "Open Source",
+          openSourceQuote:
+            "Built to understand how visual editing tools should feel, not just how they should compile.",
+          openSourceLead:
+            "The README documents the ongoing refactor and points to the earlier <code>CanvasDesigner</code> branch implementation. This Pages site exists for fast browsing and a cleaner first impression when sharing the repository.",
+          openSourcePrimaryCta: "Browse Source",
+          openSourceSecondaryCta: "CanvasDesigner Branch",
+          pagesEyebrow: "GitHub Pages",
+          pagesTitle: "Open the live project page directly from the repository.",
+          pagesLead:
+            "Once <code>master /docs</code> is enabled, the site is available at the project page URL and can be linked from the README for quick preview.",
+          pagesCta: "Open Pages",
+          footerNote: "WPF • MVVM • Visual editor research"
+        }
+      };
+
+      const defaultLang = "zh-CN";
+      const savedLang = localStorage.getItem("fluxo-lang");
+      const initialLang = translations[savedLang] ? savedLang : defaultLang;
+      const metaDescription = document.querySelector('meta[name="description"]');
+      const langButtons = document.querySelectorAll("[data-lang]");
+
+      function applyLanguage(lang) {
+        const copy = translations[lang] || translations[defaultLang];
+
+        document.documentElement.lang = lang;
+        document.title = copy.pageTitle;
+        metaDescription.setAttribute("content", copy.pageDescription);
+
+        document.querySelectorAll("[data-i18n]").forEach((node) => {
+          const key = node.dataset.i18n;
+          if (copy[key]) {
+            node.textContent = copy[key];
+          }
+        });
+
+        document.querySelectorAll("[data-i18n-html]").forEach((node) => {
+          const key = node.dataset.i18nHtml;
+          if (copy[key]) {
+            node.innerHTML = copy[key];
+          }
+        });
+
+        langButtons.forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.lang === lang));
+        });
+
+        localStorage.setItem("fluxo-lang", lang);
+      }
+
+      langButtons.forEach((button) => {
+        button.addEventListener("click", () => applyLanguage(button.dataset.lang));
+      });
+
+      applyLanguage(initialLang);
+    </script>
   </body>
 </html>
