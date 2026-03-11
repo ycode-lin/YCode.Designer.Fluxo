@@ -986,13 +986,16 @@
       <section class="panel section">
         <div class="cta">
           <div>
-            <div class="micro" data-i18n="pagesEyebrow">GitHub Pages</div>
-            <h2 class="section-title" data-i18n="pagesTitle">直接从仓库打开在线项目页。</h2>
+            <div class="micro" data-i18n="pagesEyebrow">继续浏览</div>
+            <h2 class="section-title" data-i18n="pagesTitle">从这里继续进入文档、源码与旧版实现。</h2>
             <p class="section-copy" data-i18n-html="pagesLead">
-              启用 <code>master /docs</code> 后，站点就会在项目页地址可用，并且可以从 README 直接跳转访问。
+              这个落地页的作用是帮助你快速建立项目印象。接下来更有价值的入口是 README、核心控件源码，以及保留旧方案的 <code>CanvasDesigner</code> 分支。
             </p>
           </div>
-          <a class="button button-primary" href="https://ycode-lin.github.io/YCode.Designer.Fluxo/" data-i18n="pagesCta">打开 Pages</a>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo/blob/master/README.md" data-i18n="pagesCta">阅读 README</a>
+            <a class="button button-secondary" href="https://github.com/ycode-lin/YCode.Designer.Fluxo/tree/master/YCode.Designer.Fluxo" data-i18n="pagesSecondaryCta">查看控件源码</a>
+          </div>
         </div>
       </section>
     </main>
@@ -1017,7 +1020,7 @@
           heroEyebrow: "为 WPF 系统打造的可视化工具",
           heroTitle: "设计流程，不制造阻力。",
           heroLead:
-            "YCode.Designer.Fluxo 是一个面向 WPF 的实验性控件库，聚焦节点拖拽、视口编排、连线绘制与 MVVM 友好的流程编辑。它更像一次严肃的图形化软件构成研究，而不是一个空洞的展示页。",
+            "YCode.Designer.Fluxo 是一个面向 WPF 的流程与节点设计控件实验，关注的不是静态展示，而是拖拽、视口、连线与交互反馈这些真正决定编辑体验的细节。整个仓库也因此更适合作为可视化编辑器的实现参考，而不只是一个可安装的组件壳子。",
           heroPrimaryCta: "打开仓库",
           heroSecondaryCta: "阅读 README",
           metricOne: "Windows + WPF 目标框架",
@@ -1031,9 +1034,9 @@
           nodeFour: "Bezier 或 Step 线型",
           diagramBadge: "仓库打包图标",
           capabilitiesEyebrow: "功能特性",
-          capabilitiesTitle: "一个从 Canvas 试验逐步转向控件优先模型的 WPF 研究项目。",
+          capabilitiesTitle: "从 Canvas 试验走向控件化设计，这个仓库的重点是把编辑行为做对。",
           capabilitiesLead:
-            "当前分支正从临时性的 Canvas 方案迁移到更干净的控件架构。这样做的结果是，这个仓库不仅能作为代码使用，也能作为构建可视化编辑器时的参考样本。",
+            "当前分支正在把早期的 Canvas 方案收束成更清晰的控件结构。重心不是堆更多表面效果，而是把缩放、平移、选择、拖拽和连线这些行为稳定地落到一个可维护、可复用、也更贴近 MVVM 的模型里。",
           featureOneTitle: "视口控制",
           featureOneBody: "内置变换负责缩放和平移，控件自身则把范围与视口位置当作一等状态来维护。",
           featureTwoTitle: "交互式节点",
@@ -1045,7 +1048,7 @@
           chipThree: "WPF 控件",
           chipFour: "MVVM 重构",
           detailsEyebrow: "技术细节",
-          detailsTitle: "仓库体量不大，但交互面并不简单。",
+          detailsTitle: "代码规模不大，但编辑器该有的交互层并没有被省略。",
           specOneHead: "核心控件",
           specOneBody: "<code>FluxoDesigner</code> 负责协调视口状态、元素承载、拖拽事件与工具区布局。",
           specTwoHead: "布局引擎",
@@ -1055,16 +1058,17 @@
           specFourHead: "目标框架",
           specFourBody: "<code>net8.0-windows</code>，并启用 WPF。",
           openSourceEyebrow: "开源说明",
-          openSourceQuote: "这个项目关心的是可视化编辑工具应该如何“手感正确”，而不仅仅是如何成功编译。",
+          openSourceQuote: "这个项目更在意编辑器的操作手感，而不是只把一个界面成功画出来。",
           openSourceLead:
-            "README 记录了正在进行中的重构，也指向了更早的 <code>CanvasDesigner</code> 分支实现。这个 Pages 站点的目标，是在分享仓库时提供更轻量也更清晰的第一印象。",
+            "README 记录了当前的重构方向，也保留了更早的 <code>CanvasDesigner</code> 分支实现。这个 Pages 站点存在的意义，不是替代仓库内容，而是先把项目定位、能力边界和阅读入口整理清楚。",
           openSourcePrimaryCta: "浏览源码",
           openSourceSecondaryCta: "CanvasDesigner 分支",
-          pagesEyebrow: "GitHub Pages",
-          pagesTitle: "直接从仓库打开在线项目页。",
+          pagesEyebrow: "继续浏览",
+          pagesTitle: "从这里继续进入文档、源码与旧版实现。",
           pagesLead:
-            "启用 <code>master /docs</code> 后，站点就会在项目页地址可用，并且可以从 README 直接跳转访问。",
-          pagesCta: "打开 Pages",
+            "这个落地页的作用是帮助你快速建立项目印象。接下来更有价值的入口是 README、核心控件源码，以及保留旧方案的 <code>CanvasDesigner</code> 分支。",
+          pagesCta: "阅读 README",
+          pagesSecondaryCta: "查看控件源码",
           footerNote: "WPF • MVVM • 可视化编辑研究"
         },
         en: {
@@ -1078,7 +1082,7 @@
           heroEyebrow: "Visual tooling for WPF systems",
           heroTitle: "Design flow, not friction.",
           heroLead:
-            "YCode.Designer.Fluxo is an exploratory WPF control library for node dragging, viewport orchestration, line rendering, and MVVM-oriented flow editing. It is built as a practical study in graphical software composition rather than a marketing shell.",
+            "YCode.Designer.Fluxo is an experiment in WPF flow and node editing. The focus is not static presentation but the interaction layer that actually makes an editor usable: dragging, viewport control, connection rendering, and feedback that feels deliberate. That also makes the repository more valuable as implementation reference than as a thin package wrapper.",
           heroPrimaryCta: "Open Repository",
           heroSecondaryCta: "Read README",
           metricOne: "Windows + WPF target",
@@ -1092,9 +1096,9 @@
           nodeFour: "Bezier or step variants",
           diagramBadge: "Packaged repository icon",
           capabilitiesEyebrow: "Capabilities",
-          capabilitiesTitle: "A WPF canvas study shifting toward a control-first model.",
+          capabilitiesTitle: "This repository is moving from a canvas experiment toward a control-first editor model.",
           capabilitiesLead:
-            "The current branch focuses on moving away from an ad-hoc canvas approach and toward a cleaner control architecture. The result is a repository that is useful both as code and as reference material for developers building their own visual editors.",
+            "The current branch is consolidating an earlier canvas-driven approach into a cleaner control architecture. The priority is not surface polish for its own sake, but getting zoom, pan, selection, dragging, and line behavior into a model that is maintainable, reusable, and much closer to MVVM-friendly editor design.",
           featureOneTitle: "Viewport control",
           featureOneBody:
             "Built-in transforms manage zoom and pan while the control tracks extent and viewport location as first-class state.",
@@ -1109,7 +1113,7 @@
           chipThree: "WPF Controls",
           chipFour: "MVVM Refactor",
           detailsEyebrow: "Technical Notes",
-          detailsTitle: "The repository is small, but the interaction surface is not.",
+          detailsTitle: "The codebase is compact, but the editor interaction layer is not simplified away.",
           specOneHead: "Primary control",
           specOneBody:
             "<code>FluxoDesigner</code> coordinates viewport state, item hosting, drag events, and tool placement.",
@@ -1123,16 +1127,17 @@
           specFourBody: "<code>net8.0-windows</code> with WPF enabled.",
           openSourceEyebrow: "Open Source",
           openSourceQuote:
-            "Built to understand how visual editing tools should feel, not just how they should compile.",
+            "The project cares more about how a visual editor feels to operate than about merely drawing a working surface.",
           openSourceLead:
-            "The README documents the ongoing refactor and points to the earlier <code>CanvasDesigner</code> branch implementation. This Pages site exists for fast browsing and a cleaner first impression when sharing the repository.",
+            "The README documents the current refactor and the repository still preserves the earlier <code>CanvasDesigner</code> branch implementation. This Pages site is meant to clarify project positioning, capability boundaries, and reading paths before you dive into the code itself.",
           openSourcePrimaryCta: "Browse Source",
           openSourceSecondaryCta: "CanvasDesigner Branch",
-          pagesEyebrow: "GitHub Pages",
-          pagesTitle: "Open the live project page directly from the repository.",
+          pagesEyebrow: "Next Steps",
+          pagesTitle: "From here, go deeper into the documentation and source instead of looping back to this page.",
           pagesLead:
-            "Once <code>master /docs</code> is enabled, the site is available at the project page URL and can be linked from the README for quick preview.",
-          pagesCta: "Open Pages",
+            "This landing page is only meant to establish context quickly. The more useful next stops are the README, the core control source, and the preserved <code>CanvasDesigner</code> branch.",
+          pagesCta: "Read README",
+          pagesSecondaryCta: "View Control Source",
           footerNote: "WPF • MVVM • Visual editor research"
         }
       };
