@@ -5,18 +5,20 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PackageId>YCode.Designer.Fluxo</PackageId>
     <Title>YCode.Designer.Fluxo</Title>
     <Authors>YCode</Authors>
     <Description>YCode.Designer.Fluxo aims to explore graphical visual development in WPF, providing WPF developers with insights into implementing features like node dragging, flow editing, and other visual software development concepts.</Description>
     <Copyright>Copyright (c) 2024 YCode</Copyright>
-    <PackageProjectUrl>https://github.com/lyq-lin/YCode.Designer.Fluxo</PackageProjectUrl>
-    <PackageLicenseUrl>https://licenses.nuget.org/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ycode-lin/YCode.Designer.Fluxo</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Fluxo.png</PackageIcon>
-    <RepositoryUrl>https://github.com/lyq-lin/YCode.Designer.Fluxo.git</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/ycode-lin/YCode.Designer.Fluxo.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>WPF;MVVM;Controls;Node Editor;</PackageTags>
     <PackageReleaseNotes>This version is the Preview version.</PackageReleaseNotes>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Version>1.1.1048</Version>
   </PropertyGroup>
 
@@ -32,6 +34,11 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
       <Link>Fluxo.png</Link>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <Link>README.md</Link>
     </None>
   </ItemGroup>
 

@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore YCode.Designer.Fluxo.sln
+
+      - name: Build
+        run: dotnet build YCode.Designer.Fluxo.sln --configuration Release --no-restore /p:ContinuousIntegrationBuild=true
+
+      - name: Pack library
+        run: dotnet pack YCode.Designer.Fluxo/YCode.Designer.Fluxo.csproj --configuration Release --no-build --output artifacts /p:ContinuousIntegrationBuild=true /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg
+
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-package
+          path: |
+            artifacts/*.nupkg
+            artifacts/*.snupkg
+
